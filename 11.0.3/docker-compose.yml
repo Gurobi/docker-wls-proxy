@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  compute:
+    image: gurobi/wls-proxy:11.0.3
+    restart: always
+    ports:
+      - "61099:61099"
