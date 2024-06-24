@@ -13,8 +13,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         echo "linux64" > /platform.txt; \
     fi
 
-#ENV GRB_PLATFORM=${GRB_PLATFORM}
-
 WORKDIR /opt
 
 COPY gurobi_server${GRB_VERSION}_linux64.tar.gz .
