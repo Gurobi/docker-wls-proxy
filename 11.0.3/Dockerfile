@@ -5,6 +5,7 @@ FROM ubuntu:20.04 as build
 ARG GRB_VERSION=11.0.3
 ARG GRB_SHORT_VERSION=11.0
 ARG TARGETPLATFORM
+ARG PLAT
 
 # Create a script to determine GRB_PLATFORM based on TARGETPLATFORM
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
@@ -15,7 +16,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
 
 WORKDIR /opt
 
-COPY gurobi_server${GRB_VERSION}_linux64.tar.gz .
+COPY gurobi_server${GRB_VERSION}_${PLAT}.tar.gz .
 
 # Install dependencies and download the appropriate Gurobi package
 RUN export GRB_PLATFORM=$(cat /platform.txt) && echo $GRB_PLATFORM \
