@@ -56,8 +56,8 @@ WORKDIR /opt
 
 # Copy files from the build stage
 COPY --from=build /opt/gurobi_server/linux/bin/data ./gurobi_server/linux/bin/data
-COPY --from=build /opt/gurobi_server/linux/bin/grb_wlproxy ./gurobi_server/linux/bin/grb_wlproxy
-COPY --from=build /opt/gurobi_server/linux/bin/grb_wlx.cnf ./gurobi_server/linux/bin/grb_wlx.cnf
+COPY --from=build /opt/gurobi_server/linux/bin/grb_wlsproxy ./gurobi_server/linux/bin/grb_wlsproxy
+COPY --from=build /opt/gurobi_server/linux/bin/grb_wlsproxy.cnf ./gurobi_server/linux/bin/grb_wlsproxy.cnf
 COPY --from=build /opt/gurobi_server/linux/bin/grbunzip ./gurobi_server/linux/bin/grbunzip
 COPY --from=build /opt/gurobi_server/linux/bin/grbzip ./gurobi_server/linux/bin/grbzip
 COPY --from=build /opt/gurobi_server/linux/bin/grbcluster ./gurobi_server/linux/bin/grbcluster
