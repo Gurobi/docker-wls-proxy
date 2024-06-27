@@ -78,5 +78,5 @@ RUN chgrp -R 0 /opt/gurobi_server/linux/bin && \
 USER 1001
 
 # Expose command line
-ENTRYPOINT ["grb_wlproxy", "--port=61099", "--console-ts"]
+ENTRYPOINT ["grb_wlsproxy", "--port=61099", "--console-ts"]
 EXPOSE 61099
