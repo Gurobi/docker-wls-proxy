@@ -5,7 +5,6 @@ FROM ubuntu:20.04 as build
 ARG GRB_VERSION=11.0.3
 ARG GRB_SHORT_VERSION=11.0
 ARG TARGETPLATFORM
-#ARG PLAT
 
 # Create a script to determine GRB_PLATFORM based on TARGETPLATFORM
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
@@ -30,7 +29,8 @@ RUN export GRB_PLATFORM=$(cat /platform.txt) && echo $GRB_PLATFORM \
     && tar -xvf gurobi_server${GRB_VERSION}_$GRB_PLATFORM*.tar.gz \
     && pwd && ls -alrt \
     && rm -f gurobi_server${GRB_VERSION}_$GRB_PLATFORM*.tar.gz \
-    && mv -f gurobi_server* gurobi_server \
+#    && mv -f gurobi_server* gurobi_server \
+    && sh -c 'for dir in gurobi_server*; do if [ -d "$dir" ]; then mv "$dir" gurobi_server; fi; done' \
     && rm -rf gurobi_server/$GRB_PLATFORM/docs \
     && mv -f gurobi_server/$GRB_PLATFORM*  gurobi_server/linux
 # After the file renaming, a clean image is built
