@@ -6,12 +6,11 @@ ARG GRB_VERSION=11.0.3
 ARG GRB_SHORT_VERSION=11.0
 ARG TARGETPLATFORM
 
-# Create a script to determine GRB_PLATFORM based on TARGETPLATFORM
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-        echo "armlinux64" > /platform.txt; \
-      else \
-        echo "linux64" > /platform.txt; \
-    fi
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+       ca-certificates \
+       wget \
+    && update-ca-certificates
 
 WORKDIR /opt
 
@@ -19,20 +18,15 @@ COPY gurobi_server${GRB_VERSION}_armlinux64.tar.gz .
 COPY gurobi_server${GRB_VERSION}_linux64.tar.gz .
 
 # Install dependencies and download the appropriate Gurobi package
-RUN export GRB_PLATFORM=$(cat /platform.txt) && echo $GRB_PLATFORM \
-    && apt-get update \
-    && apt-get install --no-install-recommends -y \
-       ca-certificates \
-       wget \
-    && update-ca-certificates \
-#    && wget -v https://packages.gurobi.com/${GRB_SHORT_VERSION}/gurobi_server${GRB_VERSION}_$GRB_PLATFORM.tar.gz \
-    && tar -xvf gurobi_server${GRB_VERSION}_$GRB_PLATFORM*.tar.gz \
-    && pwd && ls -alrt \
-    && rm -f gurobi_server${GRB_VERSION}_$GRB_PLATFORM*.tar.gz \
-#    && mv -f gurobi_server* gurobi_server \
-    && sh -c 'for dir in gurobi_server*; do if [ -d "$dir" ]; then mv "$dir" gurobi_server; fi; done' \
-    && rm -rf gurobi_server/$GRB_PLATFORM/docs \
-    && mv -f gurobi_server/$GRB_PLATFORM*  gurobi_server/linux
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        export GRB_PLATFORM="armlinux64"; \
+      else \
+        export GRB_PLATFORM="linux64"; \
+    fi \
+    && tar -xvf gurobi_server${GRB_VERSION}_${GRB_PLATFORM}*.tar.gz \
+    && rm *.tar.gz \
+    && mv gurobi_server*  gurobi_server\
+    && mv gurobi_server/${GRB_PLATFORM}  gurobi_server/linux
 # After the file renaming, a clean image is built
 
 # Define the final stage
@@ -56,14 +50,9 @@ RUN apt-get update \
 WORKDIR /opt
 
 # Copy files from the build stage
-COPY --from=build /opt/gurobi_server/linux/bin/data ./gurobi_server/linux/bin/data
 COPY --from=build /opt/gurobi_server/linux/bin/grb_wlsproxy ./gurobi_server/linux/bin/grb_wlsproxy
 COPY --from=build /opt/gurobi_server/linux/bin/grb_wlsproxy.cnf ./gurobi_server/linux/bin/grb_wlsproxy.cnf
-COPY --from=build /opt/gurobi_server/linux/bin/grbunzip ./gurobi_server/linux/bin/grbunzip
-COPY --from=build /opt/gurobi_server/linux/bin/grbzip ./gurobi_server/linux/bin/grbzip
-COPY --from=build /opt/gurobi_server/linux/bin/grbcluster ./gurobi_server/linux/bin/grbcluster
 #COPY --from=build /opt/gurobi_server/linux/EULA.pdf ./gurobi_server/linux/EULA.pdf
-COPY --from=build /opt/gurobi_server/linux/resources/grb_rs ./gurobi_server/linux/resources/grb_rs
 
 
 # Set environment variables and permissions
