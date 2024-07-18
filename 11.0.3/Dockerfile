@@ -1,5 +1,5 @@
 #
-# Dockerfile to create a Compute Server Node
+# Dockerfile to create a Gurobi WLS Proxy image
 # Define the build stage
 FROM ubuntu:20.04 as build
 ARG GRB_VERSION=11.0.3
