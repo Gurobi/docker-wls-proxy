@@ -1,4 +1,3 @@
-#
 # Dockerfile to create a Gurobi WLS Proxy image
 # Define the build stage
 FROM ubuntu:20.04 as build

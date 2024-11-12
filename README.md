@@ -6,7 +6,7 @@ Where to get help: [Gurobi Support](https://www.gurobi.com/support/), [Gurobi Do
 
 # Supported tags and respective Dockerfile links
 
-* [11.0.3, latest](https://github.com/Gurobi/docker-wls-proxy/blob/master/11.0.3/Dockerfile)
+* [12.0.0, latest](https://github.com/Gurobi/docker-wls-proxy/blob/master/12.0.0/Dockerfile)
 
 # Quick reference (cont.)
 
