@@ -1,7 +1,7 @@
 # Dockerfile to create a Gurobi WLS Proxy image
 # Define the build stage
 FROM ubuntu:24.04 as build
-ARG GRB_VERSION=13.0.0beta
+ARG GRB_VERSION=13.0.0
 ARG GRB_SHORT_VERSION=13.0
 ARG TARGETPLATFORM
 
