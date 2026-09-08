@@ -1,7 +1,7 @@
 #
 # Dockerfile to create a Gurobi WLS Proxy image
 # Define the build stage
-FROM ubuntu:20.04 as build
+FROM ubuntu:24.04 as build
 ARG GRB_VERSION=11.0.3
 ARG GRB_SHORT_VERSION=11.0
 ARG TARGETPLATFORM
@@ -30,7 +30,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
 # After the file renaming, a clean image is built
 
 # Define the final stage
-FROM ubuntu:20.04 AS package
+FROM ubuntu:24.04 AS package
 
 ARG GRB_VERSION=11.0.3
 ARG TARGETPLATFORM
